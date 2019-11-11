@@ -17,11 +17,14 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;// ...
     private static final String TAG = "MainActivity";
 
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
+        //firebaseDatabase = FirebaseDatabase.getInstance();
+        //databaseReference = firebaseDatabase.getReference();
 
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -90,6 +97,14 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            User u = new User();
+
+                            u.setEmail(user.getEmail());
+                            u.setNombre(user.getDisplayName());
+                            u.setId(user.getUid());
+
+                            //databaseReference.child("Users").child(u.getId()).setValue(u);
 
                             Toast.makeText(MainActivity.this, "Espere mientras ingresa sesion...", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(MainActivity.this,TimeLineActivity.class));

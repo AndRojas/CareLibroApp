@@ -2,21 +2,23 @@ package com.example.carelibroapp;
 
 public class User {
 
-    public String nombre;
-    public String genero;
-    public String telefono;
-    public String email;
-    public String fechaNac;
+    private String nombre;
+    private String genero;
+    private String telefono;
+    private String email;
+    private String fechaNac;
+    private String id;
 
     public User() {
     }
 
-    public User(String nombre, String genero, String telefono, String email, String fechaNac) {
+    public User(String nombre, String genero, String telefono, String email, String fechaNac,String id) {
         this.nombre = nombre;
         this.genero = genero;
         this.telefono = telefono;
         this.email = email;
         this.fechaNac = fechaNac;
+        this.id = id;
     }
 
     public String getNombre() {
@@ -57,5 +59,13 @@ public class User {
 
     public void setFechaNac(String fechaNac) {
         this.fechaNac = fechaNac;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
