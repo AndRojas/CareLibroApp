@@ -16,6 +16,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.carelibroapp.ui.main.SectionsPagerAdapter;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class TimeLineActivity extends AppCompatActivity implements PerfilFragment.OnFragmentInteractionListener {
 
@@ -25,6 +28,9 @@ public class TimeLineActivity extends AppCompatActivity implements PerfilFragmen
     private TextView telefono_perfil;
     private TextView email_perfil;
     private TextView fechaNac_perfil;
+
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
 
     @Override
@@ -51,6 +57,14 @@ public class TimeLineActivity extends AppCompatActivity implements PerfilFragmen
         telefono_perfil = findViewById(R.id.telefono_FP);
         email_perfil = findViewById(R.id.email_FP);
         fechaNac_perfil = findViewById(R.id.nacimiento_FP);
+
+        inicializarFirebase();
+    }
+
+    private void inicializarFirebase() {
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
     }
 
     @Override
