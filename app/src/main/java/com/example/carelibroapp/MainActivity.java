@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
                             Toast.makeText(MainActivity.this, "Espere mientras ingresa sesion...", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(MainActivity.this,TimeLineActivity.class));
                             finish();

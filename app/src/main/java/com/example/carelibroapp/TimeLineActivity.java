@@ -1,5 +1,6 @@
 package com.example.carelibroapp;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -12,10 +13,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.carelibroapp.ui.main.SectionsPagerAdapter;
 
-public class TimeLineActivity extends AppCompatActivity {
+public class TimeLineActivity extends AppCompatActivity implements PerfilFragment.OnFragmentInteractionListener {
+
+
+    private TextView nombreCompleto_perfil;
+    private TextView genero_perfil;
+    private TextView telefono_perfil;
+    private TextView email_perfil;
+    private TextView fechaNac_perfil;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +45,16 @@ public class TimeLineActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        nombreCompleto_perfil = findViewById(R.id.nombreCompleto_FP);
+        genero_perfil = findViewById(R.id.genero_FP);
+        telefono_perfil = findViewById(R.id.telefono_FP);
+        email_perfil = findViewById(R.id.email_FP);
+        fechaNac_perfil = findViewById(R.id.nacimiento_FP);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
