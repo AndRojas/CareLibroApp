@@ -4,12 +4,25 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 /**
@@ -29,6 +42,26 @@ public class PerfilFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+
+
+    private TextView nombreCompleto_perfil;
+    private TextView genero_perfil;
+    private TextView telefono_perfil;
+    private TextView email_perfil;
+    private TextView fechaNac_perfil;
+    private TextView ciudad_perfil;
+    private ImageView foto_perfil;
+
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+
+    private FirebaseAuth mAuth;// ...
+    private FirebaseUser userFB;
+
+    private User user;
+    String userUID;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -58,6 +91,21 @@ public class PerfilFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
+        userFB = mAuth.getCurrentUser();
+
+        userUID = userFB.getUid();
+
+        inicializarFirebase();
+
+
+        user = new User();
+
+        //mAuth.signOut();
+
+
 
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -65,11 +113,66 @@ public class PerfilFragment extends Fragment {
         }
     }
 
+
+
+
+    private void inicializarFirebase() {
+        //FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }
+
+    private void cargarUsuario(){
+
+        databaseReference.child("Users").child("DatosPerfil").child(userUID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                user.setId(dataSnapshot.child("id").getValue().toString());
+
+
+                user.setNombre(dataSnapshot.child("nombre").getValue().toString());
+                user.setEmail(dataSnapshot.child("email").getValue().toString());
+                user.setCiudad(dataSnapshot.child("ciudad").getValue().toString());
+                user.setFechaNac(dataSnapshot.child("fechaNac").getValue().toString());
+                user.setGenero(dataSnapshot.child("genero").getValue().toString());
+                user.setTelefono(dataSnapshot.child("telefono").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false);
+        View v =  inflater.inflate(R.layout.fragment_perfil, container, false);
+
+
+        nombreCompleto_perfil = v.findViewById(R.id.nombreCompleto_FP);
+        ciudad_perfil = v.findViewById(R.id.ciudad_FP);
+        genero_perfil = v.findViewById(R.id.genero_FP);
+        telefono_perfil = v.findViewById(R.id.telefono_FP);
+        email_perfil = v.findViewById(R.id.email_FP);
+        fechaNac_perfil = v.findViewById(R.id.nacimiento_FP);
+        foto_perfil = v.findViewById(R.id.fotoPerfil_FP);
+
+        cargarUsuario();
+
+        foto_perfil.setImageURI(userFB.getPhotoUrl());
+        nombreCompleto_perfil.setText(user.getNombre());
+        email_perfil.setText(user.getEmail());
+        ciudad_perfil.setText(user.getCiudad());
+        genero_perfil.setText(user.getGenero());
+        telefono_perfil.setText(user.getTelefono());
+        fechaNac_perfil.setText(user.getFechaNac());
+
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

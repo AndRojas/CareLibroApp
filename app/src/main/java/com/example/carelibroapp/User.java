@@ -8,17 +8,26 @@ public class User {
     private String email;
     private String fechaNac;
     private String id;
+    private String ciudad;
 
     public User() {
+        this.nombre = "";
+        this.genero = "";
+        this.telefono = "";
+        this.email = "";
+        this.fechaNac = "";
+        this.id = "";
+        this.ciudad = "";
     }
 
-    public User(String nombre, String genero, String telefono, String email, String fechaNac,String id) {
+    public User(String nombre, String genero, String telefono, String email, String fechaNac,String id,String ciudad) {
         this.nombre = nombre;
         this.genero = genero;
         this.telefono = telefono;
         this.email = email;
         this.fechaNac = fechaNac;
         this.id = id;
+        this.ciudad = ciudad;
     }
 
     public String getNombre() {
@@ -67,5 +76,13 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
 }

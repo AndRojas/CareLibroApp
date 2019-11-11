@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        //firebaseDatabase = FirebaseDatabase.getInstance();
-        //databaseReference = firebaseDatabase.getReference();
+        inicializaDatabase();
 
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -80,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void inicializaDatabase() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }
+
+
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -104,10 +109,14 @@ public class MainActivity extends AppCompatActivity {
                             u.setNombre(user.getDisplayName());
                             u.setId(user.getUid());
 
+                            Log.d("UID",u.getId());
+
                             //databaseReference.child("Users").child(u.getId()).setValue(u);
 
                             Toast.makeText(MainActivity.this, "Espere mientras ingresa sesion...", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(MainActivity.this,TimeLineActivity.class));
+                            Intent i = new Intent(MainActivity.this,TimeLineActivity.class);
+                            i.putExtra("userID",u.getId());
+                            startActivity(i);
                             finish();
 
                             //updateUI(user);
